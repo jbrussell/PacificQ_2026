@@ -1,10 +1,8 @@
 # PacificQ_2026
 
 Code accompanying Russell et al. (2026, *Nature*) for imaging upper-mantle
-shear velocity and attenuation beneath the Pacific plate from surface-wave
-observations. The pipeline has three stages, run in sequence, each of which
-is a complete, runnable component on the small seismic datasets (Old ORCA,
-Young ORCA, NoMelt) already bundled in this repository:
+shear velocity and attenuation from surface-wave observations. The pipeline 
+has three stages, run in sequence:
 
 1. **`1_Vs_Inversion/`** -- bootstrap least-squares inversion of Rayleigh-wave
    phase velocities for a shear-velocity (Vs) profile, using
@@ -12,8 +10,7 @@ Young ORCA, NoMelt) already bundled in this repository:
    kernels and a Perple_X-derived Vp/Vs-Rho parameterization.
 2. **`2_Q_inversion/`** -- Markov chain Monte Carlo (MCMC) inversion of
    phase-velocity dispersion (informed by the Vs model from stage 1) for a
-   shear-attenuation (Q<sub>&mu;</sub><sup>-1</sup>) profile, using
-   [MINEOS](https://geodynamics.org/resources/mineos) normal-mode kernels,
+   shear-attenuation (Q<sub>&mu;</sub><sup>-1</sup>) profile, using sliding splines and [MINEOS](https://geodynamics.org/resources/mineos) normal-mode kernels,
    bundled in this repository under `MINEOS/`.
 3. **`3_VBRc_Bayesian_Inversion/`** -- Bayesian MCMC inversion of the Vs and
    Q<sub>&mu;</sub><sup>-1</sup> profiles from stages 1-2 for physical state
@@ -23,7 +20,7 @@ Young ORCA, NoMelt) already bundled in this repository:
 
 Each stage directory contains the driving script(s) (prefixed `a1_`/`d2_`),
 supporting `functions/`, and its own small input `data/`. Plotting scripts
-used to generate the paper's final figures are prefixed `Z1_`/`Z2_`.
+used to generate figures are prefixed `Z1_`/`Z2_`.
 Shared third-party MATLAB utilities (`brewermap`, `save2pdf`) live in the
 top-level `functions/`.
 
@@ -143,7 +140,7 @@ data is both a correctness check and a worked example.
 
 ### Running a stage on the bundled data
 Each stage's driver script contains one commented-out parameter block per
-site (`%% JdF`, `%% Young ORCA`, `%% NoMelt`, `%% Old ORCA`); the active
+site (`%% Young ORCA`, `%% NoMelt`, `%% Old ORCA`); the active
 (uncommented) block is the one that will run, currently **Old ORCA** in
 each script. From MATLAB (or Octave, for stage 3), `cd` into a stage
 directory and run its driver script directly, e.g.:
@@ -158,8 +155,8 @@ ORCA data and the parameters as shipped:
 
 | Stage | Script | What it produces | Approx. runtime |
 |---|---|---|---|
-| 1. Vs inversion | `a1_run_surf96_Vs_lsqr_discFromQ_vpvsPplx_bs_Qcorr_BSsmLVZdQdz.m` | Diagnostic figures plus `lsqr_kernel_Vs_..._bootstrap_BSsmLVZdQdz/OldORCA_Vs_Vp_Rho_lsqr_kernel_bs1000.mat` (bootstrap Vs(z) profile, ~4.1-4.8 km/s in the upper ~300 km, consistent with old, cold Pacific lithosphere and a low-velocity zone) | Depends on `Nbs` (bootstraps), default 1000: ~tens of minutes; set `Nbs = 10` for a ~1-2 minute smoke test |
-| 2. Q inversion | `a1_run_Q_MCMC_spline_zknot_24_112s.m` | Diagnostic figures plus `bayesian_mcmc_Qspline_zknot_112s/OldORCA_uniform_Qmu_bayesian_Nspline12.mat` (MCMC Q<sub>&mu;</sub><sup>-1</sup>(z) profile, showing elevated attenuation in the asthenospheric low-velocity zone) | Depends on `nit_mcmc`, default 2,000,000: several hours; set `nit_mcmc = 2000` for a ~1-2 minute smoke test |
+| 1. Vs inversion | `a1_run_surf96_Vs_lsqr_discFromQ_vpvsPplx_bs_Qcorr_BSsmLVZdQdz.m` | Diagnostic figures plus `lsqr_kernel_Vs_..._bootstrap_BSsmLVZdQdz/OldORCA_Vs_Vp_Rho_lsqr_kernel_bs1000.mat` | Depends on `Nbs` (bootstraps), default 1000: ~tens of minutes; set `Nbs = 10` for a ~1-2 minute smoke test |
+| 2. Q inversion | `a1_run_Q_MCMC_spline_zknot_24_112s.m` | Diagnostic figures plus `bayesian_mcmc_Qspline_zknot_112s/OldORCA_uniform_Qmu_bayesian_Nspline12.mat` | Depends on `nit_mcmc`, default 2,000,000: several hours; set `nit_mcmc = 2000` for a ~1-2 minute smoke test |
 | 3. VBRc inversion | `d2_ViscHK_fref_YT24_QLVZ_Qstdthresh_dVs_dryEta_sig_VsNF_oo.m` | Diagnostic figures plus posterior state-variable distributions (T, melt fraction, water content, grain size) under `bayesian_mcmc_vbr_YT24/` | Depends on `param.nit_mcmc`, default 10,000 (paper figures also use runs up to 1,000,000): ~tens of minutes at 10,000; many hours at 1,000,000; set `param.nit_mcmc = 200` for a ~1-2 minute smoke test |
 
 Each stage's outputs for Old ORCA, Young ORCA, and NoMelt are also already
@@ -168,43 +165,6 @@ runs (e.g. `3_VBRc_Bayesian_Inversion/bayesian_mcmc_vbr_YT24/*_nit1000000_*.mat`
 -- so the corresponding `Z1_`/`Z2_` plotting scripts for each stage can be
 run immediately to inspect the paper's actual results without re-running
 any of the (multi-hour) inversions.
-
-### Running the pipeline on your own data
-1. **Prepare your input.** Build a `.mat` file matching the structure read
-   by `2_Q_inversion/functions/load_data.m`: a struct with a `rayl` field
-   (and optionally `love`) containing per-period vectors such as
-   `periods_iso`, phase velocities, and errors (see
-   `1_Vs_Inversion/data/*.mat` / `2_Q_inversion/data/*.mat` for the
-   expected field names, once fetched via `git lfs pull`). Place it in the
-   relevant stage's `data/` folder.
-2. **Stage 1 -- Vs inversion**: copy one of the `%%`-delimited site blocks
-   in the driver script, point `param.data` at your `.mat` file, and set
-   `PROJ`/`age_myr`. `path2perlextab_vs/vp/rho` already point at the
-   bundled Perple_X tables for this paper's geotherms -- generate your own
-   with `Perple_X/Simple_X/a1_run_Perple_X.m` if you need a different
-   composition/pressure-temperature range. Results are saved under
-   `lsqr_kernel_Vs_..._bootstrap_BSsmLVZdQdz/<PROJ>_Vs_Vp_Rho_lsqr_kernel_bs<Nbs>.mat`.
-3. **Stage 2 -- Q inversion**: point `param.lsqr_in` at the stage-1 output
-   and `param.data` at your data file. MINEOS paths
-   (`param.Path2runMineos`, `param.BINPATH` in `setup_parameters.m`)
-   already point at the bundled `MINEOS/` directory -- no changes needed
-   unless you relocate it. Results are saved under
-   `bayesian_mcmc_Qspline_zknot_112s/<PROJ>_uniform_Qmu_bayesian_Nspline12.mat`.
-4. **Stage 3 -- VBRc Bayesian inversion**: point
-   `param.bootstraps_Vs`/`param.bootstraps_Q` at the stage 1/2 outputs;
-   `path2perlextab_vs/vp/rho` already point at the bundled Perple_X tables
-   (as in stage 1). Results are saved under `bayesian_mcmc_vbr_YT24/`.
-5. **Plot final results** with the corresponding `Z1_`/`Z2_` script for
-   each stage, editing the `matnames`/`mcmcfiles` lists to point at your
-   output(s).
-
-### Reproduction (full-scale runs)
-The paper's published results (site: Old ORCA, 90 Ma) can be reproduced
-end-to-end from the bundled input data (`*/data/OldORCA_meas.mat`) using
-the active (uncommented) parameter blocks already in each driver script.
-See the runtime table above for approximate wall-clock time at both the
-paper-scale and quick smoke-test settings (single core, no
-parallelization; machine-dependent).
 
 ---
 
