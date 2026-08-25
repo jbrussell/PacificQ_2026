@@ -27,11 +27,11 @@ used to generate the paper's final figures are prefixed `Z1_`/`Z2_`.
 Shared third-party MATLAB utilities (`brewermap`, `save2pdf`) live in the
 top-level `functions/`.
 
-> **Note on scope:** MINEOS and VBRc are fully bundled in this repository
-> (source and, where applicable, precompiled binaries). **Perple_X is the
-> one dependency not bundled here** -- see
-> [System requirements](#1-system-requirements) and
-> [Instructions for use](#3-instructions-for-use).
+> **Note on scope:** all third-party software this pipeline depends on --
+> CPS/`surf96`, MINEOS, Perple_X, and VBRc -- is fully bundled in this
+> repository (source and, where applicable, precompiled binaries; see
+> [System requirements](#1-system-requirements)). No separate installs
+> are required on macOS Intel.
 
 ## Contents
 1. [System requirements](#1-system-requirements)
@@ -45,11 +45,12 @@ top-level `functions/`.
 
 ### Operating system
 Developed and tested on **macOS (Intel/x86\_64)**. The compiled CPS
-binaries in `bin_v3.30/` and the MEX files in `1_Vs_Inversion/functions/`
-and `2_Q_inversion/functions/` (`*.mexmaci64`) are built for macOS on
-Intel silicon. The MINEOS binaries bundled at `MINEOS/FORTRAN/bin/` are
-likewise macOS Intel builds. None of these will run as-is on Apple Silicon
-(M-series) without Rosetta, or on Linux/Windows.
+binaries in `bin_v3.30/`, the MEX files in `1_Vs_Inversion/functions/`
+and `2_Q_inversion/functions/` (`*.mexmaci64`), the MINEOS binaries at
+`MINEOS/FORTRAN/bin/`, and the Perple_X binaries at
+`Perple_X/Simple_X/bin/` are all built for macOS on Intel silicon. None
+of these will run as-is on Apple Silicon (M-series) without Rosetta, or
+on Linux/Windows.
 * To recompile CPS for another platform, get
   [Herrmann's CPS source distribution](https://www.eas.slu.edu/eqc/eqccps.html)
   and place the resulting executables in a directory you point
@@ -61,6 +62,9 @@ likewise macOS Intel builds. None of these will run as-is on Apple Silicon
   Apple Silicon via Rosetta (`MINEOS/FORTRAN/README_apple_silicon.md`); a
   gfortran-based Linux build should work with the same makefiles but has
   not been tested here.
+* Perple_X source and thermodynamic data files are bundled at
+  `Perple_X/Simple_X/`; see `Perple_X/Simple_X/README.md` for
+  recompilation notes (tested on macOS 10.15.7 with Perple_X 7.0.7).
 * Stage 3 (VBRc) is pure MATLAB/Octave and is platform-independent.
 
 ### Software dependencies
@@ -69,9 +73,9 @@ likewise macOS Intel builds. None of these will run as-is on Apple Silicon
 | MATLAB | all stages | R2023a | Also works in [GNU Octave](https://www.gnu.org/software/octave/) for stage 3 (VBRc); stages 1-2 rely on macOS-Intel MEX/Fortran binaries and are not Octave-tested. |
 | MATLAB Statistics and Machine Learning Toolbox | all stages | ships with R2023a | Uses e.g. `unifrnd`, `normrnd`. |
 | MATLAB Signal Processing Toolbox | stages 1, 3 | ships with R2023a | Uses `findpeaks`. |
-| [Computer Programs in Seismology (CPS)](https://www.eas.slu.edu/eqc/eqccps.html), `v3.30` | stage 1 | v3.30 | Compiled binaries bundled in `bin_v3.30/` (macOS Intel). Source available from the CPS website if recompilation is needed. |
+| [Computer Programs in Seismology (CPS)](https://www.eas.slu.edu/eqc/eqccps.html), `v3.30` | stage 1 | v3.30 | **Bundled**: precompiled binaries in `bin_v3.30/` (macOS Intel). Source available from the CPS website if recompilation is needed. |
 | [MINEOS](https://geodynamics.org/resources/mineos) (`MINEOS_synthetics`) | stage 2 | -- | **Bundled** at `MINEOS/` (Fortran source, precompiled macOS-Intel binaries, and MATLAB wrappers). See `MINEOS/README.md`. Requires `gfortran` only if you need to rebuild the binaries. |
-| [Perple_X](https://www.perplex.ethz.ch/) | stages 1, 3 | -- | **External dependency, not bundled.** Used to generate Vp/Vs/Rho lookup tables as a function of pressure/temperature. Scripts expect a `Perple_X/` directory as a sibling of `1_Vs_Inversion/`, `2_Q_inversion/`, etc. at the repository root -- specifically `.tabs` output tables at `Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/{stx21_vs,stx21_vp,stx21_rho}.tabs`; see [Instructions for use](#3-instructions-for-use). |
+| [Perple_X](https://www.perplex.ethz.ch/), `7.0.7` | stages 1, 3 | 7.0.7 | **Bundled** at `Perple_X/Simple_X/` (source, precompiled macOS-Intel binaries in `bin/`, thermodynamic data files, and the Vp/Vs/Rho lookup tables already computed for this paper's geotherms under `RESULTS/Hacker08_noky_400km_stx21/*.tabs`). See `Perple_X/Simple_X/README.md`. |
 | VBRc | stage 3 | bundled `vbr_YT24` snapshot | Included in this repository at `VBRc/vbr_YT24/`; no separate install needed. See `VBRc/vbr_YT24/README.md` for details. |
 | [Git LFS](https://git-lfs.com/) | all | -- | Required to fetch the `.mat` data files (see [Installation guide](#2-installation-guide)). |
 
@@ -103,32 +107,30 @@ specialized hardware -- just patience or a multi-core workstation.
    Machine Learning and Signal Processing toolboxes, or install
    [GNU Octave](https://www.gnu.org/software/octave/) if you only need
    stage 3 (VBRc).
-3. **Make the bundled binaries executable** (macOS Intel; CPS is made
+3. **Make the bundled binaries executable** (macOS Intel). CPS is made
    executable automatically by the stage-1 driver script via `!chmod ++x
-   ../bin_v3.30/*`, but MINEOS is not -- run both manually to be safe):
+   ../bin_v3.30/*`, and the Perple_X binaries already carry the executable
+   bit in Git, but the MINEOS binaries do not -- run this manually:
    ```bash
-   chmod +x bin_v3.30/*
    chmod +x MINEOS/FORTRAN/bin/*
    ```
-4. **Install Perple_X** and generate (or obtain) Vp/Vs/Rho lookup tables,
-   placing them at `Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/`
-   as a sibling directory to `1_Vs_Inversion/` etc. at the repository root
-   -- see [Instructions for use](#3-instructions-for-use). This step is
-   required before stage 1 or stage 3 can run.
-5. **(Optional, only needed to re-run stage 1/2 from scratch on new data)**
+4. **(Optional, only needed to re-run stage 1/2 from scratch on new data)**
    Compile the MEX helper functions:
    ```matlab
    cd 1_Vs_Inversion/functions   % and separately: 2_Q_inversion/functions
    CompileMexFiles
    ```
-6. **(Optional, only needed on non-macOS-Intel platforms)** Recompile CPS
-   and/or MINEOS from source -- see [System requirements](#1-system-requirements).
+5. **(Optional, only needed on non-macOS-Intel platforms)** Recompile CPS,
+   MINEOS, and/or Perple_X from source -- see
+   [System requirements](#1-system-requirements).
 
-**Typical install time on a normal desktop:** under 5 minutes for steps 1-3
-(dominated by the `git lfs pull` download, a few hundred MB). Step 4
-(Perple_X) depends on that package's own build system and how many
-lookup-table nodes you compute -- typically 10-30 minutes. Step 5 (MEX
-compilation) is under a minute once a C compiler is configured.
+**Typical install time on a normal desktop:** under 5 minutes on macOS
+Intel (dominated by the `git lfs pull` download, on the order of a few
+hundred MB, plus the one `chmod` command). Step 4 (MEX compilation) is
+under a minute once a C compiler is configured; skip it entirely if you're
+only running the pipeline on the bundled data as shipped. Step 5
+(recompiling for another platform) depends on that platform's build
+toolchain and is not required on macOS Intel.
 
 ---
 
@@ -160,11 +162,19 @@ ORCA data and the parameters as shipped:
 | 2. Q inversion | `a1_run_Q_MCMC_spline_zknot_24_112s.m` | Diagnostic figures plus `bayesian_mcmc_Qspline_zknot_112s/OldORCA_uniform_Qmu_bayesian_Nspline12.mat` (MCMC Q<sub>&mu;</sub><sup>-1</sup>(z) profile, showing elevated attenuation in the asthenospheric low-velocity zone) | Depends on `nit_mcmc`, default 2,000,000: several hours; set `nit_mcmc = 2000` for a ~1-2 minute smoke test |
 | 3. VBRc inversion | `d2_ViscHK_fref_YT24_QLVZ_Qstdthresh_dVs_dryEta_sig_VsNF_oo.m` | Diagnostic figures plus posterior state-variable distributions (T, melt fraction, water content, grain size) under `bayesian_mcmc_vbr_YT24/` | Depends on `param.nit_mcmc`, default 10,000 (paper figures also use runs up to 1,000,000): ~tens of minutes at 10,000; many hours at 1,000,000; set `param.nit_mcmc = 200` for a ~1-2 minute smoke test |
 
-Each stage's outputs for Old ORCA are also already checked into the repo
-(e.g. `3_VBRc_Bayesian_Inversion/lsqr_kernel_Vs_vpvsPerplex_Qcorr65s_bootstrap_BSsmLVZdQdz/OldORCA_*.mat`
-and `bayesian_mcmc_Qspline_zknot_112s/OldORCA_*.mat`), so the corresponding
-`Z1_`/`Z2_` plotting scripts for each stage can be run immediately to
-inspect the paper's results without re-running the inversions.
+Each stage's outputs for Old ORCA, Young ORCA, and NoMelt are also already
+checked into the repo -- including the full paper-scale stage 2/3 MCMC
+runs (e.g. `3_VBRc_Bayesian_Inversion/bayesian_mcmc_vbr_YT24/*_nit1000000_*.mat`)
+-- so the corresponding `Z1_`/`Z2_` plotting scripts for each stage can be
+run immediately to inspect the paper's actual results without re-running
+any of the (multi-hour) inversions.
+
+> **Known minor gap:** the stage-1 driver script's diagnostic plotting
+> section reads a reference model card, `./CARDS/pa5_5km.card`, that
+> currently only exists at
+> `3_VBRc_Bayesian_Inversion/S362ANI_plotting/CARDS/pa5_5km.card` -- copy
+> it into `1_Vs_Inversion/CARDS/` (or point the `read_model_card` call at
+> the existing copy) before running stage 1 end to end.
 
 ### Running the pipeline on your own data
 1. **Prepare your input.** Build a `.mat` file matching the structure read
@@ -175,9 +185,11 @@ inspect the paper's results without re-running the inversions.
    expected field names, once fetched via `git lfs pull`). Place it in the
    relevant stage's `data/` folder.
 2. **Stage 1 -- Vs inversion**: copy one of the `%%`-delimited site blocks
-   in the driver script, point `param.data` at your `.mat` file, set
-   `PROJ`/`age_myr`, and confirm `path2perlextab_vs/vp/rho` resolve to
-   your Perple_X output tables. Results are saved under
+   in the driver script, point `param.data` at your `.mat` file, and set
+   `PROJ`/`age_myr`. `path2perlextab_vs/vp/rho` already point at the
+   bundled Perple_X tables for this paper's geotherms -- generate your own
+   with `Perple_X/Simple_X/a1_run_Perple_X.m` if you need a different
+   composition/pressure-temperature range. Results are saved under
    `lsqr_kernel_Vs_..._bootstrap_BSsmLVZdQdz/<PROJ>_Vs_Vp_Rho_lsqr_kernel_bs<Nbs>.mat`.
 3. **Stage 2 -- Q inversion**: point `param.lsqr_in` at the stage-1 output
    and `param.data` at your data file. MINEOS paths
@@ -186,9 +198,9 @@ inspect the paper's results without re-running the inversions.
    unless you relocate it. Results are saved under
    `bayesian_mcmc_Qspline_zknot_112s/<PROJ>_uniform_Qmu_bayesian_Nspline12.mat`.
 4. **Stage 3 -- VBRc Bayesian inversion**: point
-   `param.bootstraps_Vs`/`param.bootstraps_Q` at the stage 1/2 outputs and
-   confirm `path2perlextab_vs/vp/rho` resolve to your Perple_X tables (as
-   in stage 1). Results are saved under `bayesian_mcmc_vbr_YT24/`.
+   `param.bootstraps_Vs`/`param.bootstraps_Q` at the stage 1/2 outputs;
+   `path2perlextab_vs/vp/rho` already point at the bundled Perple_X tables
+   (as in stage 1). Results are saved under `bayesian_mcmc_vbr_YT24/`.
 5. **Plot final results** with the corresponding `Z1_`/`Z2_` script for
    each stage, editing the `matnames`/`mcmcfiles` lists to point at your
    output(s).
@@ -215,6 +227,12 @@ Bundled third-party components retain their own licenses:
 * **VBRc** (`VBRc/vbr_YT24/`): MIT License -- see `VBRc/vbr_YT24/README.md`.
 * **CPS `surf96` binaries** (`bin_v3.30/`): see Herrmann's CPS license
   terms at [https://www.eas.slu.edu/eqc/eqccps.html](https://www.eas.slu.edu/eqc/eqccps.html).
+* **Perple_X** (`Perple_X/Simple_X/`): the `Simple_X` MATLAB wrapper is the
+  author's own code (covered by the MIT License above); the vendored
+  Perple_X binaries/data files themselves are distributed under
+  Perple_X's own terms -- see [perplex.ethz.ch](https://www.perplex.ethz.ch/).
+  A nested third-party utility, `export_fig`, carries its own license at
+  `Perple_X/Simple_X/functions/export_fig/LICENSE`.
 * **brewermap** (`functions/brewermap/`): Apache License 2.0 -- see
   `functions/brewermap/LICENSE.TXT`.
 * **save2pdf** (`functions/save2pdf.m`): third-party MATLAB File Exchange
