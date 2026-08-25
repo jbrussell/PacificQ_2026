@@ -81,7 +81,7 @@ end
 param.allperiods = []; %[param.RAperiods];
 
 % ----------- Parameters for Running Mineos -----------
-param.BINPATH = './MINEOS/FORTRAN/bin/'; %Path to the gfortran MINEOS executables
+param.BINPATH = '../MINEOS/FORTRAN/bin/'; %Path to the gfortran MINEOS executables
 param.TABLEPATH = [param.Path2runMineos,'/MODE/TABLES/']; %'/Users/naccardo/Unix/MINEOS/MODE_tables/';
 param.MODEPATH = [param.Path2runMineos,'/MODE/TABLES/MODE.in/']; %param.INPUTPATH;
 param.DATAPATH = [param.TABLEPATH,param.CARDID,'/tables_inv/']; % same as CARDTABLE
