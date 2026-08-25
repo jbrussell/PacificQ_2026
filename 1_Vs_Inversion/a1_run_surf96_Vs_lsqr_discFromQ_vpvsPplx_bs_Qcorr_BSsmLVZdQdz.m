@@ -10,21 +10,23 @@
 % 10/21/2023
 %
 clear
-path2BIN = './bin_v3.30/'; % path to surf96 binary
+path2BIN = '../bin_v3.30/'; % path to surf96 binary
 PATH = getenv('PATH');
 if isempty(strfind(PATH,path2BIN))
 %     setenv('PATH', [PATH,':',path2BIN]);
     setenv('PATH', [path2BIN,':',PATH]);
 end
-addpath('./functions/')
 % Make binary files executable
-!chmod ++x ./bin_v3.30/*
+!chmod ++x ../bin_v3.30/*
 
 % Add perplex paths
-addpath('../5_Perple_X/Simple_X/functions/');
-path2perlextab_vs = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vs.tabs';
-path2perlextab_vp = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vp.tabs';
-path2perlextab_rho = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_rho.tabs';
+addpath('../Perple_X/Simple_X/functions/');
+path2perlextab_vs = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vs.tabs';
+path2perlextab_vp = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vp.tabs';
+path2perlextab_rho = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_rho.tabs';
+
+addpath('./functions/')
+addpath('../functions/')
 
 is_save_mat = 1; % save mat file?
 

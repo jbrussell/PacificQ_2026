@@ -2,6 +2,7 @@ clear;
 fullMAINpath = mfilename('fullpath');
 functionspath = [fullMAINpath(1:regexp(fullMAINpath,mfilename)-1),'functions'];
 addpath(functionspath);
+addpath('../functions/')
 
 % Mat file names
 matnames = {
@@ -40,7 +41,7 @@ ages = [
 % path2lsqr_Vs = './lsqr_kernel_Vs_vpvsPerplex_Qcorr65s_bootstrap_sm1e4/';
 % path2lsqr_Vs = './lsqr_kernel_Vs_vpvsPerplex_Qcorr65s_bootstrap_smLVZdQdz/';
 path2lsqr_Vs = './lsqr_kernel_Vs_vpvsPerplex_Qcorr65s_bootstrap_BSsmLVZdQdz/';
-path2bayesian_Vs = './bayesian_mcmc_Vs_spline_zknot_1e6/';
+% path2bayesian_Vs = './bayesian_mcmc_Vs_spline_zknot_1e6/';
 path2bayesian_Vs_vpvsPerplex = './bayesian_mcmc_Vs_spline_zknot_1e6_vpvsPerplex/';
 
 zlims = [0 300];
@@ -104,8 +105,8 @@ for imod = 1:length(matnames)
     temp = load([path2lsqr_Vs,'/',matname]);
     lsqrinv = temp.lsqrinv; clear temp;
     
-    temp = load([path2bayesian_Vs,'/',matname_bayesian{imod}]);
-    bayesian = temp.bayesian; clear temp;
+%     temp = load([path2bayesian_Vs,'/',matname_bayesian{imod}]);
+%     bayesian = temp.bayesian; clear temp;
     
     temp = load([path2bayesian_Vs_vpvsPerplex,'/',matname_bayesian{imod}]);
     bayesian_vpvsPerplex = temp.bayesian; clear temp;

@@ -2,7 +2,7 @@ clear; close all;
 fullMAINpath = mfilename('fullpath');
 functionspath = [fullMAINpath(1:regexp(fullMAINpath,mfilename)-1),'functions'];
 addpath(functionspath);
-
+addpath('../functions/')
 
 %% 12 splines
 

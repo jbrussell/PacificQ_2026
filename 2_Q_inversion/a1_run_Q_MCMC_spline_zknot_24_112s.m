@@ -6,6 +6,7 @@ warning('off','all')
 fullMAINpath = mfilename('fullpath');
 functionspath = [fullMAINpath(1:regexp(fullMAINpath,mfilename)-1),'functions'];
 addpath(functionspath);
+addpath('../functions/')
 
 % % Compile the faster mex files for spline calculation
 % % !!!!! This only needs to be compiled the first time !!!!!
@@ -14,7 +15,7 @@ addpath(functionspath);
 % cd ..
 
 is_save_mat = 1; % Save results .mat file?
-is_overwrite_kernels = 1; % overwrite kernels?
+is_overwrite_kernels = 0; % overwrite kernels?
 
 %% JdF
 % param.CARDID = 'JdF_Nbs50_chi2thresh3.25';
