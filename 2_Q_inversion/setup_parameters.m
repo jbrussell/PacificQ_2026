@@ -16,7 +16,7 @@ param.CARDID = fgetl(fid);
 datafile = fgetl(fid);
 fclose(fid);
 
-param.Path2runMineos = './MINEOS/run_MINEOS/';
+param.Path2runMineos = '../MINEOS/run_MINEOS/';
 
 % param.layers = [25 50 :50: 500]; % define mantle layer boundaries for inversion (break constraints at boundaries)
 param.layers = [100 250 650 2000];
