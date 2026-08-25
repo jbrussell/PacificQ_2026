@@ -6,20 +6,22 @@
 %
 clear
 
-path_to_top_level_vbr='../6_VBR/vbr_YT24/';
+path_to_top_level_vbr='../VBRc/vbr_YT24/';
 addpath(path_to_top_level_vbr)
 % addpath([path_to_top_level_vbr,'/JBR_thesis/']);
 vbr_init
 
 % Add perplex paths
-addpath('../5_Perple_X/Simple_X/functions/');
-path2perlextab_vs = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vs.tabs';
-path2perlextab_vp = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vp.tabs';
-path2perlextab_rho = '../5_Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_rho.tabs';
+addpath('../Perple_X/Simple_X/functions/');
+path2perlextab_vs = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vs.tabs';
+path2perlextab_vp = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_vp.tabs';
+path2perlextab_rho = '../Perple_X/Simple_X/RESULTS/Hacker08_noky_400km_stx21/stx21_rho.tabs';
 
 path2bayesian_out = './bayesian_mcmc_vbr_YT24/';
 is_save = 1;
 is_resume_progress = 0; % Resume from "_PROGRESS" file?
+addpath('./functions/')
+addpath('../functions/')
 
 %% VBR parameters
 

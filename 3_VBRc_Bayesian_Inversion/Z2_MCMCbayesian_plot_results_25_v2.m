@@ -1,5 +1,6 @@
 clear;
-        
+addpath('./functions/')
+addpath('../functions/')        
 
 %%
 
