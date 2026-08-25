@@ -169,13 +169,6 @@ runs (e.g. `3_VBRc_Bayesian_Inversion/bayesian_mcmc_vbr_YT24/*_nit1000000_*.mat`
 run immediately to inspect the paper's actual results without re-running
 any of the (multi-hour) inversions.
 
-> **Known minor gap:** the stage-1 driver script's diagnostic plotting
-> section reads a reference model card, `./CARDS/pa5_5km.card`, that
-> currently only exists at
-> `3_VBRc_Bayesian_Inversion/S362ANI_plotting/CARDS/pa5_5km.card` -- copy
-> it into `1_Vs_Inversion/CARDS/` (or point the `read_model_card` call at
-> the existing copy) before running stage 1 end to end.
-
 ### Running the pipeline on your own data
 1. **Prepare your input.** Build a `.mat` file matching the structure read
    by `2_Q_inversion/functions/load_data.m`: a struct with a `rayl` field
