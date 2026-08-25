@@ -1,0 +1,342 @@
+
+Perple_X release 7.0.7, March 3, 2023.
+
+Copyright (C) 1986-2023 James A D Connolly <www.perplex.ethz.ch/copyright.html>.
+
+Enter the project name (the name assigned in BUILD) [default = my_project]:
+
+Reading problem definition from file: stx21.dat                                                                                           
+Reading thermodynamic data from file: stx21ver.dat                                                                                        
+Writing print output to file: stx21.plt                                                                                           
+Writing plot output to file: stx21.plt                                                                                           
+Writing phase assemblage data to file: stx21.blk                                                                                           
+Reading solution models from file: stx21_solution_model.dat                                                                            
+
+Reading Perple_X options from: perplex_option.dat                                                                                  
+Writing auto refine summary to: not requested                                                                                       
+Writing seismic data options to: stx21_seismic_data.txt                                                                              
+Writing pseudocompound glossary to: not requested                                                                                       
+Writing Perple_X option summary to: not requested                                                                                       
+
+Perple_X computational option settings for VERTEX:
+
+    Keyword:               Value:     Permitted values [default]:
+
+  Auto-refine options:
+
+    auto_refine             aut       [auto] manual off
+    replicate_threshold     0.1E-1    [1e-2]; static opt; <0 => no replica test
+    rep_dynamic_threshold   0.1E-2    [1d-3]; dynamic opt; <0 => no replica test
+    re-refine               F         [F] T
+    intermediate_savrpc     F         [F] T
+    intermediate_savdyn     F         [F] T
+    keep_all_rpcs           T         [T] F
+
+  Free energy minimization options:
+
+    MINFRC_diff_increment   0.1E-6    [1e-7] 1e-3 => 1e-9
+    MINFXC_solver            0        [0] >= 0 - speci2, -1 - MINFXC
+    optimization_max_it     40        [40] >1
+    optimization_precision  0.1E-3    [1e-4], 1e-1 => 1e-6, absolute
+    dynamic_LP_start        war       [warm] cold hot
+    static_LP_start         war       [hot] cold warm
+    order_check             F         [F] T
+    refinement_points        8        [auto] 1->14
+    refinement_switch       F         [T] F
+    scatter-points          T         [T] F
+    scatter-increment       0.1E-1    [1e-2] 1e-2 => 1e-7
+    solvus_tolerance_II     aut       [0.2] 0->1 
+    zero_mode               0.1E-5    [1e-6] 0->1; < 0 => off
+
+  2D grid options:
+
+    x_nodes                 20 /120   [10/40] >0, <2048; effective x-resolution   20 / 953 nodes
+    y_nodes                 20 /120   [10/40] >0, <2048; effective y-resolution   20 / 953 nodes
+    grid_levels             1 / 4     [1/4] >0, <10
+    linear_model            on        [on] off
+
+  Solution subdivision options:
+
+    initial_resolution:     0.2000    [1/5] 0->1; 0 => off
+    stretch_factor          0.0020    [2d-3] >0 
+    non_linear_switch       F         [F] T
+    subdivision_override    off       [lin] off str
+    refine_endmembers       F         [F] T
+
+  Thermodynamic options:
+
+    solvus_tolerance        aut       [aut] or 0->1; aut = automatic, 0 => p=c pseudocompounds, 1 => homogenize
+    T_stop (K)              0.0       [0]
+    T_melt (K)              873.0     [873]
+    approx_alpha            T         [T] F
+    Anderson-Gruneisen      F         [F] T
+    speciation_precision    0.1E-4    [1d-5] <1; absolute
+    speciation_max_it       100       [100]
+    GFSM                    F         [F] T GFSM/special_component toggle
+    hybrid_EoS_H2O          4         [4] 0-2, 4-7
+    hybrid_EoS_CO2          4         [4] 0-4, 7
+    hybrid_EoS_CH4          0         [0] 0-1, 7
+    aq_bad_results          err       [err] 101 102 103 ignore
+    aq_lagged_speciation    F         [F] T
+    aq_ion_H+               T         [T] F => use OH-
+    aq_oxide_components     F         [F] T
+    aq_solvent_solvus       T         [T] F
+    aq_vapor_epsilon        1.0       [1.]
+
+  Input/Output options:
+
+    pause_on_error          T         [T] F
+    timing                  T         [T] F
+    auto_exclude            T         [T] F
+    warn_interactive        T         [T] F
+    warn_no_limit           F         [F] T
+    output_iteration_detai  F         [F] T
+    output_iteration_g      F         [F] T
+    logarithmic_p           F         [F] T
+    logarithmic_X           F         [F] T
+    bad_number              NaN       [NaN]
+    interim_results         aut       [auto] off manual
+
+  Information file output options:
+
+    option_list_files       F         [F] T; echo computational options
+    pseudocompound_file     F         [F] T; echo static pseudocompound compositions
+    auto_refine_file        F         [T] F; echo auto-refine compositions
+    seismic_data_file       T         [F] T; echo seismic wavespeed options
+
+To change these options see: www.perplex.ethz.ch/perplex_options.html
+
+
+**warning ver099** The P derivative of mu for qtz      is < 0, this is improbable. 
+
+
+**warning ver099**  no data for aqueous species, aq_output and aq_lagged_speciation disabled.
+
+--------------------------------------------------------------------------------
+Solution model summary:
+
+       4 pseudocompounds generated for: C2/c      
+       4 pseudocompounds generated for: Pl        
+       4 pseudocompounds generated for: Sp        
+       4 pseudocompounds generated for: O         
+       4 pseudocompounds generated for: Ring      
+      52 pseudocompounds generated for: Opx       
+     121 pseudocompounds generated for: Cpx       
+     273 pseudocompounds generated for: Gt        
+
+Total number of pseudocompounds:     466
+
+Summary of included solution models:
+
+C2/c       Pl         Sp         O          Ring       Opx        Cpx        Gt        
+--------------------------------------------------------------------------------
+** Starting exploratory computational stage **
+
+  4.8% done with low level grid.
+  9.5% done with low level grid.
+ 14.3% done with low level grid.
+ 19.0% done with low level grid.
+ 23.8% done with low level grid.
+ 28.6% done with low level grid.
+ 33.3% done with low level grid.
+ 38.1% done with low level grid.
+ 42.9% done with low level grid.
+ 47.6% done with low level grid.
+ 52.4% done with low level grid.
+ 57.1% done with low level grid.
+ 61.9% done with low level grid.
+ 66.7% done with low level grid.
+ 71.4% done with low level grid.
+ 76.2% done with low level grid.
+ 81.0% done with low level grid.
+ 85.7% done with low level grid.
+ 90.5% done with low level grid.
+ 95.2% done with low level grid.
+--------------------------------------------------------------------------------
+Exploratory stage generated:
+
+      14 compositions for: C2/c      
+      38 compositions for: Pl        
+      24 compositions for: Sp        
+      19 compositions for: O         
+      15 compositions for: Ring      
+     158 compositions for: Opx       
+     251 compositions for: Cpx       
+     259 compositions for: Gt        
+
+Total number of compositions:     778
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+** Starting auto-refine computational stage **
+
+  0.8% done with low level grid.
+  1.7% done with low level grid.
+  2.5% done with low level grid.
+  3.3% done with low level grid.
+  4.2% done with low level grid.
+  5.0% done with low level grid.
+  5.8% done with low level grid.
+  6.7% done with low level grid.
+  7.5% done with low level grid.
+  8.3% done with low level grid.
+  9.2% done with low level grid.
+ 10.0% done with low level grid.
+ 10.8% done with low level grid.
+ 11.7% done with low level grid.
+ 12.5% done with low level grid.
+ 13.3% done with low level grid.
+ 14.2% done with low level grid.
+ 15.0% done with low level grid.
+ 15.8% done with low level grid.
+ 16.7% done with low level grid.
+ 17.5% done with low level grid.
+ 18.3% done with low level grid.
+ 19.2% done with low level grid.
+ 20.0% done with low level grid.
+ 20.8% done with low level grid.
+ 21.7% done with low level grid.
+ 22.5% done with low level grid.
+ 23.3% done with low level grid.
+ 24.2% done with low level grid.
+ 25.0% done with low level grid.
+ 25.8% done with low level grid.
+ 26.7% done with low level grid.
+ 27.5% done with low level grid.
+ 28.3% done with low level grid.
+ 29.2% done with low level grid.
+ 30.0% done with low level grid.
+ 30.8% done with low level grid.
+ 31.7% done with low level grid.
+ 32.5% done with low level grid.
+ 33.3% done with low level grid.
+ 34.2% done with low level grid.
+ 35.0% done with low level grid.
+ 35.8% done with low level grid.
+ 36.7% done with low level grid.
+ 37.5% done with low level grid.
+ 38.3% done with low level grid.
+ 39.2% done with low level grid.
+ 40.0% done with low level grid.
+ 40.8% done with low level grid.
+ 41.7% done with low level grid.
+ 42.5% done with low level grid.
+ 43.3% done with low level grid.
+ 44.2% done with low level grid.
+ 45.0% done with low level grid.
+ 45.8% done with low level grid.
+ 46.7% done with low level grid.
+ 47.5% done with low level grid.
+ 48.3% done with low level grid.
+ 49.2% done with low level grid.
+ 50.0% done with low level grid.
+ 50.8% done with low level grid.
+ 51.7% done with low level grid.
+ 52.5% done with low level grid.
+ 53.3% done with low level grid.
+ 54.2% done with low level grid.
+ 55.0% done with low level grid.
+ 55.8% done with low level grid.
+ 56.7% done with low level grid.
+ 57.5% done with low level grid.
+ 58.3% done with low level grid.
+ 59.2% done with low level grid.
+ 60.0% done with low level grid.
+ 60.8% done with low level grid.
+ 61.7% done with low level grid.
+ 62.5% done with low level grid.
+ 63.3% done with low level grid.
+ 64.2% done with low level grid.
+ 65.0% done with low level grid.
+ 65.8% done with low level grid.
+ 66.7% done with low level grid.
+ 67.5% done with low level grid.
+ 68.3% done with low level grid.
+ 69.2% done with low level grid.
+ 70.0% done with low level grid.
+ 70.8% done with low level grid.
+ 71.7% done with low level grid.
+ 72.5% done with low level grid.
+ 73.3% done with low level grid.
+ 74.2% done with low level grid.
+ 75.0% done with low level grid.
+ 75.8% done with low level grid.
+ 76.7% done with low level grid.
+ 77.5% done with low level grid.
+ 78.3% done with low level grid.
+ 79.2% done with low level grid.
+ 80.0% done with low level grid.
+ 80.8% done with low level grid.
+ 81.7% done with low level grid.
+ 82.5% done with low level grid.
+ 83.3% done with low level grid.
+ 84.2% done with low level grid.
+ 85.0% done with low level grid.
+ 85.8% done with low level grid.
+ 86.7% done with low level grid.
+ 87.5% done with low level grid.
+ 88.3% done with low level grid.
+ 89.2% done with low level grid.
+ 90.0% done with low level grid.
+ 90.8% done with low level grid.
+ 91.7% done with low level grid.
+ 92.5% done with low level grid.
+ 93.3% done with low level grid.
+ 94.2% done with low level grid.
+ 95.0% done with low level grid.
+ 95.8% done with low level grid.
+ 96.7% done with low level grid.
+ 97.5% done with low level grid.
+ 98.3% done with low level grid.
+ 99.2% done with low level grid.
+100.0% done with low level grid.
+
+Beginning grid refinement stage.
+
+   826 grid cells to be refined at grid level 2
+       ...working (   501 minimizations done)
+       ...working (  1002 minimizations done)
+       ...working (  1504 minimizations done)
+       refinement at level 2 involved   1734 minimizations
+ 16134 minimizations required of the theoretical limit of   57121
+  1562 grid cells to be refined at grid level 3
+       ...working (   271 minimizations done)
+       ...working (   773 minimizations done)
+       ...working (  1275 minimizations done)
+       ...working (  1777 minimizations done)
+       ...working (  2278 minimizations done)
+       ...working (  2780 minimizations done)
+       refinement at level 3 involved   3133 minimizations
+ 19267 minimizations required of the theoretical limit of  227529
+  3209 grid cells to be refined at grid level 4
+       ...working (   149 minimizations done)
+       ...working (   650 minimizations done)
+       ...working (  1152 minimizations done)
+       ...working (  1655 minimizations done)
+       ...working (  2156 minimizations done)
+       ...working (  2658 minimizations done)
+       ...working (  3160 minimizations done)
+       ...working (  3662 minimizations done)
+       ...working (  4163 minimizations done)
+       ...working (  4665 minimizations done)
+       ...working (  5166 minimizations done)
+       ...working (  5667 minimizations done)
+       ...working (  6168 minimizations done)
+       refinement at level 4 involved   6419 minimizations
+ 25686 minimizations required of the theoretical limit of  910116
+--------------------------------------------------------------------------------
+     Timing                    min.         % of total
+
+  Static G calculation       0.46715E-01         2.0
+  Dynamic G calculation      0.57009            24.3
+  Static LP                  0.31009E-01         1.3
+  Dynamic LP                 0.39241            16.8
+  Successive QP               1.2278            52.4
+  Total of above              2.2680            96.8
+  Total elapsed time          2.3425           100.0
+--------------------------------------------------------------------------------
+
+End of job: stx21                                                                                               
+
+--------------------------------------------------------------------------------
+
+    41062587

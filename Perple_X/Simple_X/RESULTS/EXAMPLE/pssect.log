@@ -1,0 +1,60 @@
+
+Perple_X release 7.0.7, March 3, 2023.
+
+Copyright (C) 1986-2023 James A D Connolly <www.perplex.ethz.ch/copyright.html>.
+
+Enter the project name (the name assigned in BUILD) [default = my_project]:
+
+Reading Perple_X options from: perplex_option.dat                                                                                  
+
+**warning ver099** The P derivative of mu for qtz      is < 0, this is improbable. 
+
+--------------------------------------------------------------------------------
+
+Warning: the plot option file: perplex_plot_option.dat                 
+was not found, default option values will be used.
+
+
+Perple_X plot options are currently set as:
+
+    Keyword:               Value:     Permitted values [default]:
+    axis_label_scale       1.20       [1.2] (rel)
+    bounding_box :
+                               0      [0] x-min (pts)
+                               0      [0] y-min (pts)
+                             800      [800] x-length (pts)
+                             800      [800] y-length (pts)
+    field_fill             T          [T] F
+    field_label            T          [T] F
+    numeric_field_label    F          [F] T, if T PSSECT writes list to *_assemblages.txt
+    replicate_label        0.025      0->1 [0.025]
+    field_label_scale      0.72       [0.72] (rel)
+    font                   Helvetica                               
+    grid                   F          [F] T
+    half_ticks             T          [T] F
+    line_width             1.00       0-99 [1.] (pts)
+    picture_transformation :
+                            0.180     [0.18] x-scale (rel)
+                            0.180     [0.18] y-scale (rel)
+                             160.     [0.18] x-translation (pts)
+                             220.     [0.18] y-translation (pts)
+                             0.00     [0.0]  rotation (deg)
+    plot_aspect_ratio      1.000      [1.0] x_axis_length/y_axis_length
+    splines                T          [T] F
+    tenth_ticks            F          [F] T
+    text_scale             1.000      [1.] (rel)
+    plot_extra_data        
+
+To change these options edit or create the plot option file
+See: www.perplex.ethz.ch/perplex_plot_options.html
+
+
+PostScript will be written to file: stx21.ps                                                                                            
+Modify the default plot (y/n)?
+There are  16 fields for: Opx Cpx O Sp Pl Pl
+There are  23 fields for: Opx Cpx Cpx O Gt C2/c
+There are  35 fields for: Opx Cpx O Sp Gt
+There are  73 fields for: Opx Cpx O Gt C2/c
+There are  11 fields for: Opx Cpx O Sp Pl qtz
+There are  12 fields for: Opx Cpx O Pl Pl qtz
+There are   2 fields for: Opx Cpx O Pl qtz
